@@ -1,0 +1,404 @@
+START THREAD 1 1 
+
+================================================================
+===  FlexPDE Version 8.01/W64  12:40:29 Mar  4 2025  Copyright � 1996-2023 PDE Solutions Inc.
+===  C:\Users\User\OneDrive\������� ����\������\���1\1.pde 08:21:52 4/21/26
+================================================================
+    1| TITLE "Лабораторная работа №1 - Вариант 11 (Задание 1)"
+    2| SELECT
+    3|   ERRLIM = 1e-4
+    4| COORDINATES
+    5|   CARTESIAN2
+    6| VARIABLES
+    7|   Temp
+    8| DEFINITIONS
+    9|   K           {Теплопроводность}
+   10|   source      {Мощность внутренних источников}
+   11|   Rfuel = 0.008   {Вариант 11: Радиус топлива 8 мм}
+   12|   RShell = 0.010  {Вариант 11: Внешний радиус оболочки 10 мм}
+   13|   Tg = 300        {Температура теплоносителя}
+   14|   alfa = 25000    {Коэффициент теплоотдачи}
+   15| 
+   16| EQUATIONS
+   17|   DIV(K * grad(Temp)) + source = 0
+   18| 
+   19| BOUNDARIES
+   20|   REGION 1 'Shell'
+   21|     K = 18       {Теплопроводность оболочки для в.11}
+   22|     source = 0
+   23|     START(RShell, 0)
+   24|     NATURAL(Temp) = alfa * (Temp - Tg)
+   25|     ARC(CENTER=0,0) ANGLE=360
+   26| 
+   27|   REGION 2 'Fuel'
+   28|     K = 3.5      {Теплопроводность топлива для в.11}
+   29|     source = 8e6 {Энерговыделение для в.11}
+   30|     START(Rfuel, 0)
+   31|     ARC(CENTER=0,0) ANGLE=360
+   32| 
+   33| PLOTS
+   34|   CONTOUR(Temp)
+   35|   SURFACE(Temp)
+   36|   ELEVATION(Temp) FROM (0,0) TO (RShell, 0)
+   37| END
+FlexPDE Lite Version 8.01/W64 3D
+Copyright � 1996-2023 PDE Solutions Inc.
+FlexPDE Lite Version 8.01/W64 3D
+Copyright � 1996-2023 PDE Solutions Inc.
+FlexPDE Lite Version 8.01/W64 3D
+Copyright � 1996-2023 PDE Solutions Inc.
+STUDENT VERSION SETS GROW2=0.35 GRIDARC=30
+
+==========================
+ SUMMARIZE PARAMETERS
+==========================
+ Param    name     Type       Domain               Definition
+-------------------------------------------------------------------------------
+    1  ERRLIM       Scalar  (GLOBAL)               :  1.00e-4
+                                                   =>  1.00e-4
+    2       K      Unknown  (GLOBAL)               :  undefined
+                                                   =>  undefined
+                          (REGION   1)           :  18
+                          (REGION   2)           :  3.50000
+    3  SOURCE      Unknown  (GLOBAL)               :  undefined
+                                                   =>  undefined
+                          (REGION   1)           :  0
+                          (REGION   2)           :  8.00e+6
+    4   RFUEL       Scalar  (GLOBAL)               :  0.00800
+                                                   =>  0.00800
+    5  RSHELL       Scalar  (GLOBAL)               :  0.01000
+                                                   =>  0.01000
+    6      TG       Scalar  (GLOBAL)               :  300
+                                                   =>  300
+    7    ALFA       Scalar  (GLOBAL)               :  25000
+                                                   =>  25000
+
+
+
+==========================
+SUMMARIZE EQUATIONS
+==========================
+In the following equation definitions
+Derivatives are represented by appending a dot and the differentiated coordinate.
+The operator <V> represents volume integration. 
+<Vb> is weighted by basis function.
+<Vu> is weighted by the upwind modifer. 
+<Vbu> is weighted by both.
+A dotted volume integral (eg, <Vb.x>) represents volume integration weighted by the indicated
+derivative of the basis function.
+'tri3', 'tet20', etc., represents a basis function in the indicated basis.
+The operator <S.c> represents surface integration weighted by the indicated
+direction cosine.
+
+--------------------------------------------------------------------------------------------------
+
+PRIMARY EQUATIONS
+--------------------
+        DEFINES REGION/  DEPENDS                       BASE        CSE
+EQUATION    VAR  BLOCK    ON VAR        FUNCTION  COMPLEXITY COMPLEXITY    MEMORY           DEFINITION
+--------------------------------------------------------------------------------------------------------------
+     1     TEMP                 Generic Equation                                  : ((DIV(K*(GRAD(TEMP))))+SOURCE)- 0
+                                    LHS Equation         11         11        704 : (DX( 18*(DX(TEMP))))+(DY( 18*(DY(TEMP))))
+                                          Source          1          2        128 : <Vb>( 0)
+                                  Space Galerkin         18         10        640 : -((<Vb.X>( 18*TEMP.X))+(<Vb.Y>( 18*TEMP.Y)))
+                           TEMP   Space Jacobian         18         10        640 : -((<Vb.X>( 18*tri10.X))+(<Vb.Y>( 18*tri10.Y)))
+                                Surface Galerkin          9          9        576 : (<S.X>( 18*TEMP.X))+(<S.Y>( 18*TEMP.Y))
+                           TEMP Surface Jacobian          9          9        576 : (<S.X>( 18*tri10.X))+(<S.Y>( 18*tri10.Y))
+                                    LHS Equation         11         11        704 : (DX( 3.50000*(DX(TEMP))))+(DY( 3.50000*(DY(TEMP))))
+                                          Source          1          2        128 : <Vb>(-8.00e+6)
+                                  Space Galerkin         18         10        640 : -((<Vb.X>( 3.50000*TEMP.X))+(<Vb.Y>( 3.50000*TEMP.Y)))
+                           TEMP   Space Jacobian         18         10        640 : -((<Vb.X>( 3.50000*tri10.X))+(<Vb.Y>( 3.50000*tri10.Y)))
+                                Surface Galerkin          9          9        576 : (<S.X>( 3.50000*TEMP.X))+(<S.Y>( 3.50000*TEMP.Y))
+                           TEMP Surface Jacobian          9          9        576 : (<S.X>( 3.50000*tri10.X))+(<S.Y>( 3.50000*tri10.Y))
+
+
+EQUATION 1 PARAMETER DEPENDENCIES:
+            K       SOURCE
+
+========================================================
+     SUMMARIZE BOUNDARY CONDITIONS
+========================================================
+
+BOUNDARY CONDITION TAGS with associated BC INDEX
+BC SET   1: BC(TEMP)= nat(1)
+            
+
+    BC  KIND   DEFINES REGION  DEPENDS     FUNCTION  COMPLEXITY    MEMORY    DEFINITION
+-----------------------------------------------------------------------------------------------------
+     1   NAT     TEMP       1         Surf Galerkin          6        384 : <S0>( 25000*(TEMP- 300))
+                               TEMP   Surf Jacobian          4        256 : <S0>( 25000*tri10)
+
+===============================
+  SUMMARIZE PLOTS
+===============================
+                      REGION/       BASE        CSE
+  PLOT    TYPE     COMPARTMENT  COMPLEXITY  COMPLEXITY    MEMORY    DEFINITION
+------------------------------------------------------------------------------
+     1     CONTOUR          0          1          1           64 : TEMP
+     2     SURFACE          0          1          1           64 : TEMP
+     3   ELEVATION          0          1          1           64 : TEMP
+
+
+=== 0 STORED COMMON SUBEXPRESSIONS === 
+
+
+==UNUSED== PARAMETER DEFINITIONS:
+ ERRLIM
+LOG Threads=4 Order=3 Speed=1 Stability=0
+CG it=264 itlimit=2029 Flag=Ok Xnorm=832.722
+Linear Step 1 Error= 832.7216::1e-07 Orthomin/DInv
+CG it=433 itlimit=2029 Flag=Ok Xnorm=0.0108756
+Linear Step 2 Error= 0.010876::1e-07 Orthomin/DInv
+CG it=390 itlimit=2029 Flag=Ok Xnorm=9.48309e-09
+Linear Step 3 Error= 9.483e-9::1e-07 Orthomin/DInv
+RMS Spatial Errors   1.534e-5
+
+================================================================
+===  FlexPDE Version 8.01/W64  12:40:29 Mar  4 2025  Copyright � 1996-2023 PDE Solutions Inc.
+===  C:\Users\User\OneDrive\������� ����\������\���1\1.pde 08:22:42 4/21/26
+================================================================
+    1| TITLE "Lab 1 - Variant 11 - Task 1 (Corrected)"
+    2| SELECT
+    3|   ERRLIM = 1e-4
+    4| COORDINATES
+    5|   CARTESIAN2
+    6| VARIABLES
+    7|   Temp
+    8| DEFINITIONS
+    9|   K_val       {Используем промежуточную переменную для чистоты}
+   10|   Q_val
+   11|   
+   12|   {Параметры 11 варианта}
+   13|   R_fuel = 0.008   
+   14|   R_shell = 0.010  
+   15|   T_gas = 300      
+   16|   alpha = 25000    
+   17|   
+   18|   K_fuel = 3.5
+   19|   K_shell = 18
+   20|   Q_source = 8e6
+   21| 
+   22| EQUATIONS
+   23|   DIV(K_val * grad(Temp)) + Q_val = 0
+   24| 
+   25| BOUNDARIES
+   26|   REGION 1 'System'
+   27|     {Сначала определяем общие параметры для внешней границы}
+   28|     K_val = K_shell
+   29|     Q_val = 0
+   30|     START(R_shell, 0)
+   31|     NATURAL(Temp) = alpha * (Temp - T_gas)
+   32|     ARC(CENTER=0,0) ANGLE=360
+   33| 
+   34|   REGION 2 'Fuel'
+   35|     {Затем переопределяем свойства только внутри этого региона}
+   36|     K_val = K_fuel
+   37|     Q_val = Q_source
+   38|     START(R_fuel, 0)
+   39|     ARC(CENTER=0,0) ANGLE=360
+   40| 
+   41| PLOTS
+   42|   CONTOUR(Temp)
+   43|   SURFACE(Temp)
+   44|   ELEVATION(Temp) FROM (0,0) TO (R_shell, 0)
+   45| END
+STUDENT VERSION SETS GROW2=0.35 GRIDARC=30
+IMPORTMESH(C:\Users\User\OneDrive\������� ����\������\���1\1_output\1_initialmesh.xfr) 
+Trap=0 NDIM=2 NB=10 NAB=3 NODES=106 CELLS=178 SIDES=283 LEGS=0 imaging=0 time(0)=0
+MESH IMPORT ABORTED: Different GRID2D
+Transferred mesh does not match local domain!
+(Boundary descriptions must match exactly.)
+ABORT IMPORT, CHECK_AUTOMESH_HEADER FAILED
+
+==========================
+ SUMMARIZE PARAMETERS
+==========================
+ Param      name     Type       Domain               Definition
+-------------------------------------------------------------------------------
+    1    ERRLIM       Scalar  (GLOBAL)               :  1.00e-4
+                                                     =>  1.00e-4
+    2     K_VAL      Unknown  (GLOBAL)               :  undefined
+                                                     =>  undefined
+                            (REGION   1)           : K_SHELL
+                            (REGION   2)           : K_FUEL
+    3     Q_VAL      Unknown  (GLOBAL)               :  undefined
+                                                     =>  undefined
+                            (REGION   1)           :  0
+                            (REGION   2)           : Q_SOURCE
+    4    R_FUEL       Scalar  (GLOBAL)               :  0.00800
+                                                     =>  0.00800
+    5   R_SHELL       Scalar  (GLOBAL)               :  0.01000
+                                                     =>  0.01000
+    6     T_GAS       Scalar  (GLOBAL)               :  300
+                                                     =>  300
+    7     ALPHA       Scalar  (GLOBAL)               :  25000
+                                                     =>  25000
+    8    K_FUEL       Scalar  (GLOBAL)               :  3.50000
+                                                     =>  3.50000
+    9   K_SHELL       Scalar  (GLOBAL)               :  18
+                                                     =>  18
+   10  Q_SOURCE       Scalar  (GLOBAL)               :  8.00e+6
+                                                     =>  8.00e+6
+
+
+
+==========================
+SUMMARIZE EQUATIONS
+==========================
+In the following equation definitions
+Derivatives are represented by appending a dot and the differentiated coordinate.
+The operator <V> represents volume integration. 
+<Vb> is weighted by basis function.
+<Vu> is weighted by the upwind modifer. 
+<Vbu> is weighted by both.
+A dotted volume integral (eg, <Vb.x>) represents volume integration weighted by the indicated
+derivative of the basis function.
+'tri3', 'tet20', etc., represents a basis function in the indicated basis.
+The operator <S.c> represents surface integration weighted by the indicated
+direction cosine.
+
+--------------------------------------------------------------------------------------------------
+
+PRIMARY EQUATIONS
+--------------------
+        DEFINES REGION/  DEPENDS                       BASE        CSE
+EQUATION    VAR  BLOCK    ON VAR        FUNCTION  COMPLEXITY COMPLEXITY    MEMORY           DEFINITION
+--------------------------------------------------------------------------------------------------------------
+     1     TEMP                 Generic Equation                                 
+|       - |  0.00000
+          |       + |    Q_VAL
+                    |    vdiv |       * |    grad |     TEMP
+                                        |    K_VAL
+----------------------------------------
+                                    LHS Equation         11         11        704
+|       + |       DY|       * |       DY|     TEMP
+                              |  18.0000
+          |       DX|       * |       DX|     TEMP
+                              |  18.0000
+----------------------------------------
+                                          Source          1          2        128
+|      <V>| BaseWate
+          |    zero 
+----------------------------------------
+                                  Space Galerkin         18         10        640
+|     neg |       + |    <V>.Y| BaseWate
+                              |       * |   TEMP.Y
+                                        |  18.0000
+                    |    <V>.X| BaseWate
+                              |       * |   TEMP.X
+                                        |  18.0000
+----------------------------------------
+                           TEMP   Space Jacobian         18         10        640
+|     neg |       + |    <V>.Y| BaseWate
+                              |       * |  tri10.Y
+                                        |  18.0000
+                    |    <V>.X| BaseWate
+                              |       * |  tri10.X
+                                        |  18.0000
+----------------------------------------
+                                Surface Galerkin          9          9        576
+|       + |    <S>.Y|       * |   TEMP.Y
+                              |  18.0000
+          |    <S>.X|       * |   TEMP.X
+                              |  18.0000
+----------------------------------------
+                           TEMP Surface Jacobian          9          9        576
+|       + |    <S>.Y|       * |  tri10.Y
+                              |  18.0000
+          |    <S>.X|       * |  tri10.X
+                              |  18.0000
+----------------------------------------
+                                    LHS Equation         11         11        704
+|       + |       DY|       * |       DY|     TEMP
+                              |  3.50000
+          |       DX|       * |       DX|     TEMP
+                              |  3.50000
+----------------------------------------
+                                          Source          1          2        128
+|      <V>| BaseWate
+          | -8.00e+6
+----------------------------------------
+                                  Space Galerkin         18         10        640
+|     neg |       + |    <V>.Y| BaseWate
+                              |       * |   TEMP.Y
+                                        |  3.50000
+                    |    <V>.X| BaseWate
+                              |       * |   TEMP.X
+                                        |  3.50000
+----------------------------------------
+                           TEMP   Space Jacobian         18         10        640
+|     neg |       + |    <V>.Y| BaseWate
+                              |       * |  tri10.Y
+                                        |  3.50000
+                    |    <V>.X| BaseWate
+                              |       * |  tri10.X
+                                        |  3.50000
+----------------------------------------
+                                Surface Galerkin          9          9        576
+|       + |    <S>.Y|       * |   TEMP.Y
+                              |  3.50000
+          |    <S>.X|       * |   TEMP.X
+                              |  3.50000
+----------------------------------------
+                           TEMP Surface Jacobian          9          9        576
+|       + |    <S>.Y|       * |  tri10.Y
+                              |  3.50000
+          |    <S>.X|       * |  tri10.X
+                              |  3.50000
+----------------------------------------
+
+
+EQUATION 1 PARAMETER DEPENDENCIES:
+        K_VAL        Q_VAL       K_FUEL      K_SHELL     Q_SOURCE
+
+========================================================
+     SUMMARIZE BOUNDARY CONDITIONS
+========================================================
+
+BOUNDARY CONDITION TAGS with associated BC INDEX
+BC SET   1: BC(TEMP)= nat(1)
+            
+
+    BC  KIND   DEFINES REGION  DEPENDS     FUNCTION  COMPLEXITY    MEMORY    DEFINITION
+-----------------------------------------------------------------------------------------------------
+     1   NAT     TEMP       1         Surf Galerkin          6        384
+|      <S>|       * |       - |  300.000
+                              |     TEMP
+                    |  25000.0
+----------------------------------------
+                               TEMP   Surf Jacobian          4        256
+|      <S>|       * |    tri10
+                    |  25000.0
+----------------------------------------
+
+===============================
+  SUMMARIZE PLOTS
+===============================
+                      REGION/       BASE        CSE
+  PLOT    TYPE     COMPARTMENT  COMPLEXITY  COMPLEXITY    MEMORY    DEFINITION
+------------------------------------------------------------------------------
+     1     CONTOUR          0          1          1           64
+|     TEMP
+----------------------------------------
+     2     SURFACE          0          1          1           64
+|     TEMP
+----------------------------------------
+     3   ELEVATION          0          1          1           64
+|     TEMP
+----------------------------------------
+
+
+=== 0 STORED COMMON SUBEXPRESSIONS === 
+
+
+==UNUSED== PARAMETER DEFINITIONS:
+   ERRLIM
+LOG Threads=4 Order=3 Speed=1 Stability=0
+CG it=263 itlimit=2029 Flag=Ok Xnorm=832.722
+Linear Step 1 Error= 832.7216::1e-07 Orthomin/DInv
+CG it=435 itlimit=2029 Flag=Ok Xnorm=0.0104989
+Linear Step 2 Error= 0.010499::1e-07 Orthomin/DInv
+CG it=472 itlimit=2029 Flag=Ok Xnorm=9.10641e-08
+Linear Step 3 Error= 9.106e-8::1e-07 Orthomin/DInv
+RMS Spatial Errors   1.534e-5
+END 1 08:26:09 4/21/26

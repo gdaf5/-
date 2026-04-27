@@ -1,0 +1,18 @@
+FlexPDE Version 8.01/W64  12:40:29 Mar  4 2025  Time:08:24:39 4/21/26  Microsoft Windows [Version 10.0.26200.8246]
+Format:
+ +   wall | charged | 
+ +  clock |   CPU   | ...progress data...).
+
+START C:\Users\User\OneDrive\Рабочий стол\лабабы\лаб1\2.pde  08:24:39 4/21/26
+ +    0:00|     0:00| Mesh Generation Complete 
+ +    0:00|     0:00| Mesh dump written to C:\Users\User\OneDrive\Рабочий стол\лабабы\лаб1\2_output\2_initialmesh.xfr 
+ +    0:00|     0:00|  4 Threads  Cubic (3)   
+ +    0:00|     0:00| (1)Linear Step 1 Error= 845.6299 Orthomin/DInv(258)
+ +    0:00|     0:00| (1)Linear Step 2 Error= 0.008430 Orthomin/DInv(380)
+ +    0:00|     0:00| (1)Linear Step 3 Error= 1.833e-8 Orthomin/DInv(422)
+ +    0:00|     0:00| GRID 1 Nodes=130 Cells=178 DOF=922 RMS ERR= 2.317e-6 MAX ERR= 3.396e-6 MEM(KiB)=2116
+ +    0:00|     0:00| --DONE-- 08:24:40 4/21/26
+
+ Problem Time:08:24:40 4/21/26  Elapsed Time:00:00:01
+
+ Stop Time:08:26:09 4/21/26  Elapsed Time:00:01:30

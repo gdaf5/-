@@ -1,0 +1,169 @@
+START THREAD 3 3 
+
+================================================================
+===  FlexPDE Version 8.01/W64  12:40:29 Mar  4 2025  Copyright © 1996-2023 PDE Solutions Inc.
+===  C:\Users\User\OneDrive\Ðàáî÷èé ñòîë\ëàáàáû\ëàá1\3.pde 08:25:16 4/21/26
+================================================================
+    1| TITLE "Lab 1 - Variant 11 - Task 3"
+    2| SELECT
+    3|   ERRLIM = 1e-4
+    4| COORDINATES
+    5|   CARTESIAN2
+    6| VARIABLES
+    7|   Temp
+    8| DEFINITIONS
+    9|   K_val
+   10|   source
+   11|   Rfuel = 0.008
+   12|   RShell = 0.010
+   13|   Tg = 300
+   14|   alfa = 25000
+   15|   
+   16|   Rt1 = 5e-4
+   17|   Rt2 = 1e-4
+   18|   {Ð˜ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÐ¼ ÑƒÑÐ»Ð¾Ð²Ð¸Ðµ Ð´Ð»Ñ ÑÐµÐºÑ‚Ð¾Ñ€Ð°}
+   19|   Rt_local = IF (x > 0 AND y > 0) THEN Rt1 ELSE Rt2 
+   20| 
+   21| EQUATIONS
+   22|   DIV(K_val * grad(Temp)) + source = 0
+   23| 
+   24| BOUNDARIES
+   25|   REGION 1 'Shell'
+   26|     K_val = 18
+   27|     source = 0
+   28|     START(RShell, 0)
+   29|     NATURAL(Temp) = alfa * (Temp - Tg)
+   30|     ARC(CENTER=0,0) ANGLE=360
+   31| 
+   32|   REGION 2 'Fuel'
+   33|     K_val = 3.5
+   34|     source = 8e6
+   35|     START(Rfuel, 0)
+   36|     CONTACT(Temp) = JUMP(Temp) / Rt_local
+   37|     ARC(CENTER=0,0) ANGLE=360
+   38| 
+   39| PLOTS
+   40|   CONTOUR(Temp)
+   41|   SURFACE(Temp)
+   42|   ELEVATION(Temp) FROM (0,0) TO (RShell, 0)
+   43|   ELEVATION(Temp) FROM (0,0) TO (0, RShell)
+   44| END
+STUDENT VERSION SETS GROW2=0.35 GRIDARC=30
+
+==========================
+ SUMMARIZE PARAMETERS
+==========================
+ Param      name     Type       Domain               Definition
+-------------------------------------------------------------------------------
+    1    ERRLIM       Scalar  (GLOBAL)               :  1.00e-4
+                                                     =>  1.00e-4
+    2     K_VAL      Unknown  (GLOBAL)               :  undefined
+                                                     =>  undefined
+                            (REGION   1)           :  18
+                            (REGION   2)           :  3.50000
+    3    SOURCE      Unknown  (GLOBAL)               :  undefined
+                                                     =>  undefined
+                            (REGION   1)           :  0
+                            (REGION   2)           :  8.00e+6
+    4     RFUEL       Scalar  (GLOBAL)               :  0.00800
+                                                     =>  0.00800
+    5    RSHELL       Scalar  (GLOBAL)               :  0.01000
+                                                     =>  0.01000
+    6        TG       Scalar  (GLOBAL)               :  300
+                                                     =>  300
+    7      ALFA       Scalar  (GLOBAL)               :  25000
+                                                     =>  25000
+    8       RT1       Scalar  (GLOBAL)               :  5.00e-4
+                                                     =>  5.00e-4
+    9       RT2       Scalar  (GLOBAL)               :  1.00e-4
+                                                     =>  1.00e-4
+   10  RT_LOCAL       Scalar  (GLOBAL)               : if((X>= 0)&(Y>= 0)) then(RT1) else(RT2)
+                                                     => if((X>= 0)&(Y>= 0)) then( 5.00e-4) else( 1.00e-4)
+
+
+
+==========================
+SUMMARIZE EQUATIONS
+==========================
+In the following equation definitions
+Derivatives are represented by appending a dot and the differentiated coordinate.
+The operator <V> represents volume integration. 
+<Vb> is weighted by basis function.
+<Vu> is weighted by the upwind modifer. 
+<Vbu> is weighted by both.
+A dotted volume integral (eg, <Vb.x>) represents volume integration weighted by the indicated
+derivative of the basis function.
+'tri3', 'tet20', etc., represents a basis function in the indicated basis.
+The operator <S.c> represents surface integration weighted by the indicated
+direction cosine.
+
+--------------------------------------------------------------------------------------------------
+
+PRIMARY EQUATIONS
+--------------------
+        DEFINES REGION/  DEPENDS                       BASE        CSE
+EQUATION    VAR  BLOCK    ON VAR        FUNCTION  COMPLEXITY COMPLEXITY    MEMORY           DEFINITION
+--------------------------------------------------------------------------------------------------------------
+     1     TEMP                 Generic Equation                                  : ((DIV(K_VAL*(GRAD(TEMP))))+SOURCE)- 0
+                                    LHS Equation         11         11        704 : (DX( 18*(DX(TEMP))))+(DY( 18*(DY(TEMP))))
+                                          Source          1          2        128 : <Vb>( 0)
+                                  Space Galerkin         18         10        640 : -((<Vb.X>( 18*TEMP.X))+(<Vb.Y>( 18*TEMP.Y)))
+                           TEMP   Space Jacobian         18         10        640 : -((<Vb.X>( 18*tri10.X))+(<Vb.Y>( 18*tri10.Y)))
+                                Surface Galerkin          9          9        576 : (<S.X>( 18*TEMP.X))+(<S.Y>( 18*TEMP.Y))
+                           TEMP Surface Jacobian          9          9        576 : (<S.X>( 18*tri10.X))+(<S.Y>( 18*tri10.Y))
+                                    LHS Equation         11         11        704 : (DX( 3.50000*(DX(TEMP))))+(DY( 3.50000*(DY(TEMP))))
+                                          Source          1          2        128 : <Vb>(-8.00e+6)
+                                  Space Galerkin         18         10        640 : -((<Vb.X>( 3.50000*TEMP.X))+(<Vb.Y>( 3.50000*TEMP.Y)))
+                           TEMP   Space Jacobian         18         10        640 : -((<Vb.X>( 3.50000*tri10.X))+(<Vb.Y>( 3.50000*tri10.Y)))
+                                Surface Galerkin          9          9        576 : (<S.X>( 3.50000*TEMP.X))+(<S.Y>( 3.50000*TEMP.Y))
+                           TEMP Surface Jacobian          9          9        576 : (<S.X>( 3.50000*tri10.X))+(<S.Y>( 3.50000*tri10.Y))
+
+
+EQUATION 1 PARAMETER DEPENDENCIES:
+        K_VAL       SOURCE
+
+========================================================
+     SUMMARIZE BOUNDARY CONDITIONS
+========================================================
+
+BOUNDARY CONDITION TAGS with associated BC INDEX
+BC SET   1: BC(TEMP)= nat(1)
+            
+BC SET   2: BC(TEMP)= jmp(2)
+            
+
+    BC  KIND   DEFINES REGION  DEPENDS     FUNCTION  COMPLEXITY    MEMORY    DEFINITION
+-----------------------------------------------------------------------------------------------------
+     1   NAT     TEMP       1         Surf Galerkin          6        384 : <S0>( 25000*(TEMP- 300))
+                               TEMP   Surf Jacobian          4        256 : <S0>( 25000*tri10)
+     2   JMP     TEMP       1         Surf Galerkin         13        832 : <S0>(jump(TEMP)/(if((X>= 0)&(Y>= 0)) then( 5.00e-4) else( 1.00e-4)))
+                               TEMP   Surf Jacobian         13        832 : <S0>(tri10/(if((X>= 0)&(Y>= 0)) then( 5.00e-4) else( 1.00e-4)))
+         JMP     TEMP       2         Surf Galerkin         13        832 : <S0>(jump(TEMP)/(if((X>= 0)&(Y>= 0)) then( 5.00e-4) else( 1.00e-4)))
+                               TEMP   Surf Jacobian         13        832 : <S0>(tri10/(if((X>= 0)&(Y>= 0)) then( 5.00e-4) else( 1.00e-4)))
+
+===============================
+  SUMMARIZE PLOTS
+===============================
+                      REGION/       BASE        CSE
+  PLOT    TYPE     COMPARTMENT  COMPLEXITY  COMPLEXITY    MEMORY    DEFINITION
+------------------------------------------------------------------------------
+     1     CONTOUR          0          1          1           64 : TEMP
+     2     SURFACE          0          1          1           64 : TEMP
+     3   ELEVATION          0          1          1           64 : TEMP
+     4   ELEVATION          0          1          1           64 : TEMP
+
+
+=== 0 STORED COMMON SUBEXPRESSIONS === 
+
+
+==UNUSED== PARAMETER DEFINITIONS:
+   ERRLIM
+LOG Threads=4 Order=3 Speed=1 Stability=0
+CG it=371 itlimit=2030 Flag=Ok Xnorm=889.785
+Linear Step 1 Error= 889.7853::1e-07 Orthomin/DInv
+CG it=476 itlimit=2030 Flag=Ok Xnorm=0.0187205
+Linear Step 2 Error= 0.018721::1e-07 Orthomin/DInv
+CG it=450 itlimit=2030 Flag=Ok Xnorm=2.70898e-08
+Linear Step 3 Error= 2.709e-8::1e-07 Orthomin/DInv
+RMS Spatial Errors   1.615e-4
+END 3 08:26:09 4/21/26

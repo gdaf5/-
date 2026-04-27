@@ -1,0 +1,71 @@
+TITLE 'Lab TVEL: Variant 11 Final MEPhI'
+COORDINATES cartesian2
+
+VARIABLES
+  u { Температура }
+
+DEFINITIONS
+  r_top = 0.01
+  r_ob = 0.012
+  
+  { ИСКУССТВЕННЫЙ ЗАЗОР для обхода лимитов сетки Lite-версии }
+  delta = 0.0005 { Толщина слоя 0.5 мм }
+  r_gap = r_top + delta
+  
+  { Параметры 11 варианта }
+  qv_final = 5e6
+  lam_t = 5
+  lam_ob = 20
+  cp_t = 4.5e6
+  cp_ob = 3.1e6
+  alpha = 30000
+  Tw = 320
+  tc = 3000
+  
+  Rt_out = 1e-4
+  Rt_in = 1e-3
+  phi_lim = 90 * pi/180
+  
+  { Плавный старт (защита от Floating-Point Overflow) }
+  qv = qv_final * (1 - exp(-t/10))
+  
+  r_val = magnitude(x,y)
+  phi_pos = ATAN2(y, x)
+  
+  { Логика Задания 2: скачок Rt во времени и по углу }
+  curr_Rt = IF (t > tc/2 AND abs(phi_pos) < phi_lim/2) THEN Rt_in ELSE Rt_out
+  
+  { Эффективная теплопроводность зазора }
+  lam_gap = delta / curr_Rt
+  
+  { Свойства сред (без физических границ, только математика) }
+  k_val = IF (r_val < r_top) THEN lam_t ELSE (IF (r_val < r_gap) THEN lam_gap ELSE lam_ob)
+  cp_val = IF (r_val < r_top) THEN cp_t ELSE cp_ob
+  source = IF (r_val < r_top) THEN qv ELSE 0
+
+INITIAL VALUES
+  u = Tw
+
+EQUATIONS
+  cp_val * dt(u) = div(k_val * grad(u)) + source
+
+BOUNDARIES
+  { Единственный регион: никаких проблем с сеткой и синтаксисом }
+  REGION 'TVEL'
+    START (r_ob, 0)
+    NATURAL(u) = -alpha * (u - Tw) 
+    ARC(CENTER=0,0) ANGLE=360 TO CLOSE
+
+TIME
+  FROM 0 TO tc BY 50
+
+PLOTS
+  FOR t = 500, 1500, tc
+    CONTOUR(u) AS 'Isothermal Lines'
+    SURFACE(u) AS 'Temperature 3D'
+    ELEVATION(u) FROM (0.001, 0) TO (r_ob, 0) AS 'Radial Profile'
+
+  { Точки смещены внутрь для защиты от ошибки "outside domain" }
+  HISTORY(u) AT (0.001, 0) (r_top - 0.001, 0) (r_ob - 0.001, 0) AS 'Temp History'
+
+END

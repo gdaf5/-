@@ -1,0 +1,10 @@
+[package]
+name = "lab_work_11_rust"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[[bin]]
+name = "lab_work_11_rust"
+path = "main.rs"

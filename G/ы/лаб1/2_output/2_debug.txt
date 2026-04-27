@@ -1,0 +1,239 @@
+START THREAD 2 2 
+
+================================================================
+===  FlexPDE Version 8.01/W64  12:40:29 Mar  4 2025  Copyright © 1996-2023 PDE Solutions Inc.
+===  C:\Users\User\OneDrive\Ðàáî÷èé ñòîë\ëàáàáû\ëàá1\2.pde 08:24:07 4/21/26
+================================================================
+    1| TITLE "Lab 1 - Variant 11 - Task 2 (Corrected)"
+    2| SELECT
+    3|   ERRLIM = 1e-4
+    4| COORDINATES
+    5|   CARTESIAN2
+    6| VARIABLES
+    7|   Temp
+    8| DEFINITIONS
+    9|   K_val
+   10|   Q_val
+   11|   R_fuel = 0.008   
+   12|   R_shell = 0.010  
+   13|   T_gas = 300      
+   14|   alpha = 25000    
+   15|   
+   16|   K_fuel = 3.5
+   17|   K_shell = 18
+   18|   Q_source = 8e6
+   19|   Rt = 2e-4  {Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ Rt Ð´Ð»Ñ Ð²Ð°Ñ€Ð¸Ð°Ð½Ñ‚Ð° 11}
+   20| 
+   21| EQUATIONS
+   22|   DIV(K_val * grad(Temp)) + Q_val = 0
+   23| 
+   24| BOUNDARIES
+   25|   REGION 1 'Shell'
+   26|     K_val = K_shell
+   27|     Q_val = 0
+   28|     START(R_shell, 0)
+   29|     NATURAL(Temp) = alpha * (Temp - T_gas)
+   30|     ARC(CENTER=0,0) ANGLE=360
+   31| 
+   32|   REGION 2 'Fuel'
+   33|     K_val = K_fuel
+   34|     Q_val = Q_source
+   35|     START(R_fuel, 0)
+   36|     {Ð’Ð°Ð¶Ð½Ð¾: CONTACT Ð¿Ñ€Ð¾Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ÑÑ Ð²Ð½ÑƒÑ‚Ñ€Ð¸ Ñ€ÐµÐ³Ð¸Ð¾Ð½Ð°, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð½Ð°Ñ…Ð¾Ð´Ð¸Ñ‚ÑÑ 'Ð¿Ð¾Ð´' Ð´Ñ€ÑƒÐ³Ð¸Ð¼}
+   37|     CONTACT(Temp) = JUMP(Temp) / Rt 
+   38|     ARC(CENTER=0,0) ANGLE=360
+   39| 
+   40| PLOTS
+   41|   CONTOUR(Temp)
+   42|   ELEVATION(Temp) FROM (0,0) TO (R_shell, 0)
+   43|   SUMMARY
+   44|     REPORT(MAX(Temp))
+Parse_Error at Line 44 Cols 12-14
+ in file C:\Users\User\OneDrive\Ðàáî÷èé ñòîë\ëàáàáû\ëàá1\2.pde
+Wrong Number of Arguments
+-----Called from Control::parse_file
+-----Called from Control::do_parse
+-----Called from PDEThread::state_machine
+-----Called from PDEThread::run
+-----Called from PageStack::GUIcreatejob
+-----Called from PageStack::newfile
+-----Called from FlexPDE::OnRun
+
+Parse_Error Catches RTException stop_parse(100,000001E28DB8AC20,000001E282AAE790)
+errmsg: Wrong Number of Arguments
+Traceback:
+-----Called from Control::parse_file
+-----Called from Control::do_parse
+-----Called from PDEThread::state_machine
+-----Called from PDEThread::run
+-----Called from PageStack::GUIcreatejob
+-----Called from PageStack::newfile
+-----Called from FlexPDE::OnRun
+
+PDEThread Catches RTException stop_parse(100,000001E28DB8AC20,000001E282AAE790)
+errmsg: Wrong Number of Arguments
+Traceback:
+-----Called from Control::parse_file
+-----Called from Control::do_parse
+-----Called from PDEThread::state_machine
+-----Called from PDEThread::run
+-----Called from PageStack::GUIcreatejob
+-----Called from PageStack::newfile
+-----Called from FlexPDE::OnRun
+
+
+================================================================
+===  FlexPDE Version 8.01/W64  12:40:29 Mar  4 2025  Copyright © 1996-2023 PDE Solutions Inc.
+===  C:\Users\User\OneDrive\Ðàáî÷èé ñòîë\ëàáàáû\ëàá1\2.pde 08:24:39 4/21/26
+================================================================
+    1| TITLE "Lab 1 - Variant 11 - Task 2"
+    2| SELECT
+    3|   ERRLIM = 1e-4
+    4| COORDINATES
+    5|   CARTESIAN2
+    6| VARIABLES
+    7|   Temp
+    8| DEFINITIONS
+    9|   K_val  {ÐŸÐµÑ€ÐµÐ¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð»Ð¸ K Ð²Ð¾ Ð¸Ð·Ð±ÐµÐ¶Ð°Ð½Ð¸Ðµ ÐºÐ¾Ð½Ñ„Ð»Ð¸ÐºÑ‚Ð°}
+   10|   source
+   11|   Rfuel = 0.008
+   12|   RShell = 0.010
+   13|   Tg = 300
+   14|   alfa = 25000
+   15|   Rt = 2e-4
+   16| 
+   17| EQUATIONS
+   18|   DIV(K_val * grad(Temp)) + source = 0
+   19| 
+   20| BOUNDARIES
+   21|   REGION 1 'Shell'
+   22|     K_val = 18
+   23|     source = 0
+   24|     START(RShell, 0)
+   25|     NATURAL(Temp) = alfa * (Temp - Tg)
+   26|     ARC(CENTER=0,0) ANGLE=360
+   27| 
+   28|   REGION 2 'Fuel'
+   29|     K_val = 3.5
+   30|     source = 8e6
+   31|     START(Rfuel, 0)
+   32|     CONTACT(Temp) = JUMP(Temp) / Rt
+   33|     ARC(CENTER=0,0) ANGLE=360
+   34| 
+   35| PLOTS
+   36|   CONTOUR(Temp)
+   37|   ELEVATION(Temp) FROM (0,0) TO (RShell, 0)
+   38| END
+STUDENT VERSION SETS GROW2=0.35 GRIDARC=30
+
+==========================
+ SUMMARIZE PARAMETERS
+==========================
+ Param    name     Type       Domain               Definition
+-------------------------------------------------------------------------------
+    1  ERRLIM       Scalar  (GLOBAL)               :  1.00e-4
+                                                   =>  1.00e-4
+    2   K_VAL      Unknown  (GLOBAL)               :  undefined
+                                                   =>  undefined
+                          (REGION   1)           :  18
+                          (REGION   2)           :  3.50000
+    3  SOURCE      Unknown  (GLOBAL)               :  undefined
+                                                   =>  undefined
+                          (REGION   1)           :  0
+                          (REGION   2)           :  8.00e+6
+    4   RFUEL       Scalar  (GLOBAL)               :  0.00800
+                                                   =>  0.00800
+    5  RSHELL       Scalar  (GLOBAL)               :  0.01000
+                                                   =>  0.01000
+    6      TG       Scalar  (GLOBAL)               :  300
+                                                   =>  300
+    7    ALFA       Scalar  (GLOBAL)               :  25000
+                                                   =>  25000
+    8      RT       Scalar  (GLOBAL)               :  2.00e-4
+                                                   =>  2.00e-4
+
+
+
+==========================
+SUMMARIZE EQUATIONS
+==========================
+In the following equation definitions
+Derivatives are represented by appending a dot and the differentiated coordinate.
+The operator <V> represents volume integration. 
+<Vb> is weighted by basis function.
+<Vu> is weighted by the upwind modifer. 
+<Vbu> is weighted by both.
+A dotted volume integral (eg, <Vb.x>) represents volume integration weighted by the indicated
+derivative of the basis function.
+'tri3', 'tet20', etc., represents a basis function in the indicated basis.
+The operator <S.c> represents surface integration weighted by the indicated
+direction cosine.
+
+--------------------------------------------------------------------------------------------------
+
+PRIMARY EQUATIONS
+--------------------
+        DEFINES REGION/  DEPENDS                       BASE        CSE
+EQUATION    VAR  BLOCK    ON VAR        FUNCTION  COMPLEXITY COMPLEXITY    MEMORY           DEFINITION
+--------------------------------------------------------------------------------------------------------------
+     1     TEMP                 Generic Equation                                  : ((DIV(K_VAL*(GRAD(TEMP))))+SOURCE)- 0
+                                    LHS Equation         11         11        704 : (DX( 18*(DX(TEMP))))+(DY( 18*(DY(TEMP))))
+                                          Source          1          2        128 : <Vb>( 0)
+                                  Space Galerkin         18         10        640 : -((<Vb.X>( 18*TEMP.X))+(<Vb.Y>( 18*TEMP.Y)))
+                           TEMP   Space Jacobian         18         10        640 : -((<Vb.X>( 18*tri10.X))+(<Vb.Y>( 18*tri10.Y)))
+                                Surface Galerkin          9          9        576 : (<S.X>( 18*TEMP.X))+(<S.Y>( 18*TEMP.Y))
+                           TEMP Surface Jacobian          9          9        576 : (<S.X>( 18*tri10.X))+(<S.Y>( 18*tri10.Y))
+                                    LHS Equation         11         11        704 : (DX( 3.50000*(DX(TEMP))))+(DY( 3.50000*(DY(TEMP))))
+                                          Source          1          2        128 : <Vb>(-8.00e+6)
+                                  Space Galerkin         18         10        640 : -((<Vb.X>( 3.50000*TEMP.X))+(<Vb.Y>( 3.50000*TEMP.Y)))
+                           TEMP   Space Jacobian         18         10        640 : -((<Vb.X>( 3.50000*tri10.X))+(<Vb.Y>( 3.50000*tri10.Y)))
+                                Surface Galerkin          9          9        576 : (<S.X>( 3.50000*TEMP.X))+(<S.Y>( 3.50000*TEMP.Y))
+                           TEMP Surface Jacobian          9          9        576 : (<S.X>( 3.50000*tri10.X))+(<S.Y>( 3.50000*tri10.Y))
+
+
+EQUATION 1 PARAMETER DEPENDENCIES:
+        K_VAL       SOURCE
+
+========================================================
+     SUMMARIZE BOUNDARY CONDITIONS
+========================================================
+
+BOUNDARY CONDITION TAGS with associated BC INDEX
+BC SET   1: BC(TEMP)= nat(1)
+            
+BC SET   2: BC(TEMP)= jmp(2)
+            
+
+    BC  KIND   DEFINES REGION  DEPENDS     FUNCTION  COMPLEXITY    MEMORY    DEFINITION
+-----------------------------------------------------------------------------------------------------
+     1   NAT     TEMP       1         Surf Galerkin          6        384 : <S0>( 25000*(TEMP- 300))
+                               TEMP   Surf Jacobian          4        256 : <S0>( 25000*tri10)
+     2   JMP     TEMP       1         Surf Galerkin          4        256 : <S0>(jump(TEMP)* 5000)
+                               TEMP   Surf Jacobian          4        256 : <S0>(tri10* 5000)
+         JMP     TEMP       2         Surf Galerkin          4        256 : <S0>(jump(TEMP)* 5000)
+                               TEMP   Surf Jacobian          4        256 : <S0>(tri10* 5000)
+
+===============================
+  SUMMARIZE PLOTS
+===============================
+                      REGION/       BASE        CSE
+  PLOT    TYPE     COMPARTMENT  COMPLEXITY  COMPLEXITY    MEMORY    DEFINITION
+------------------------------------------------------------------------------
+     1     CONTOUR          0          1          1           64 : TEMP
+     2   ELEVATION          0          1          1           64 : TEMP
+
+
+=== 0 STORED COMMON SUBEXPRESSIONS === 
+
+
+==UNUSED== PARAMETER DEFINITIONS:
+ ERRLIM
+LOG Threads=4 Order=3 Speed=1 Stability=0
+CG it=258 itlimit=2030 Flag=Ok Xnorm=845.63
+Linear Step 1 Error= 845.6299::1e-07 Orthomin/DInv
+CG it=380 itlimit=2030 Flag=Ok Xnorm=0.00843007
+Linear Step 2 Error= 0.008430::1e-07 Orthomin/DInv
+CG it=422 itlimit=2030 Flag=Ok Xnorm=1.83328e-08
+Linear Step 3 Error= 1.833e-8::1e-07 Orthomin/DInv
+RMS Spatial Errors   1.501e-5
+END 2 08:26:09 4/21/26
